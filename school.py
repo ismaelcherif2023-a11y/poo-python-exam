@@ -36,9 +36,19 @@ class SchoolClass:
     def get_students(self):
         return self.__students
 
+    def rank_matter_1(self):
+        sorted_students = sorted(self.__students,
+                                 key=lambda s: s.get_note1(),
+                                 reverse=True)
+        print("\n--- Classement Matière 1 ---")
+        for student in sorted_students:
+            print(student)
+
 
 if __name__ == '__main__':
     school_class = SchoolClass()
     school_class.add_student(Student('J', 10, 12, 13))
     school_class.add_student(Student('A', 8, 2, 17))
     school_class.add_student(Student('V', 9, 14, 14))
+
+    school_class.rank_matter_1()
