@@ -44,6 +44,36 @@ class StudentIteratorMatter1(Iterator):
         return student
 
 
+class StudentIteratorMatter2(Iterator):
+    def __init__(self, students):
+        self.__students = sorted(students,
+                                  key=lambda s: s.get_note2(),
+                                  reverse=True)
+        self.__index = 0
+
+    def __next__(self):
+        if self.__index >= len(self.__students):
+            raise StopIteration
+        student = self.__students[self.__index]
+        self.__index += 1
+        return student
+
+
+class StudentIteratorMatter3(Iterator):
+    def __init__(self, students):
+        self.__students = sorted(students,
+                                  key=lambda s: s.get_note3(),
+                                  reverse=True)
+        self.__index = 0
+
+    def __next__(self):
+        if self.__index >= len(self.__students):
+            raise StopIteration
+        student = self.__students[self.__index]
+        self.__index += 1
+        return student
+
+
 class SchoolClass(Iterable):
     def __init__(self):
         self.__students = []
@@ -64,6 +94,14 @@ if __name__ == '__main__':
     school_class.add_student(Student('A', 8, 2, 17))
     school_class.add_student(Student('V', 9, 14, 14))
 
-    print("\n--- Classement Matière 1 (Iterator) ---")
+    print("\n--- Classement Matière 1 ---")
     for student in school_class:
+        print(student)
+
+    print("\n--- Classement Matière 2 ---")
+    for student in StudentIteratorMatter2(school_class.get_students()):
+        print(student)
+
+    print("\n--- Classement Matière 3 ---")
+    for student in StudentIteratorMatter3(school_class.get_students()):
         print(student)
