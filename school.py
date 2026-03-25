@@ -112,8 +112,17 @@ def add_iterator_matter4(cls):
     return cls
 
 
+class SchoolClassSingleton(type):
+    instance = None
+
+    def __call__(cls, *args, **kwargs):
+        if cls.instance is None:
+            cls.instance = super().__call__(*args, **kwargs)
+        return cls.instance
+
+
 @add_iterator_matter4
-class SchoolClass(Iterable):
+class SchoolClass(Iterable, metaclass=SchoolClassSingleton):
     def __init__(self):
         self.__students = []
 
@@ -148,3 +157,8 @@ if __name__ == '__main__':
     print("\n--- Classement Matière 4 ---")
     for student in school_class.iter_matter4():
         print(f'{student.get_name()} - Note4: {student.get_note4()}')
+
+    # Test Singleton
+    school_class2 = SchoolClass()
+    assert school_class is school_class2
+    print("\n✅ Singleton OK : même instance !")
