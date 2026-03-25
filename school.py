@@ -1,6 +1,22 @@
 from collections.abc import Iterable, Iterator
 
 
+def add_note4(cls):
+    original_init = cls.__init__
+
+    def new_init(self, name, note1, note2, note3, note4=0):
+        original_init(self, name, note1, note2, note3)
+        self._note4 = note4
+
+    def get_note4(self):
+        return self._note4
+
+    cls.__init__ = new_init
+    cls.get_note4 = get_note4
+    return cls
+
+
+@add_note4
 class Student:
     def __init__(self, name, note1, note2, note3):
         self.__name = name
@@ -90,9 +106,9 @@ class SchoolClass(Iterable):
 
 if __name__ == '__main__':
     school_class = SchoolClass()
-    school_class.add_student(Student('J', 10, 12, 13))
-    school_class.add_student(Student('A', 8, 2, 17))
-    school_class.add_student(Student('V', 9, 14, 14))
+    school_class.add_student(Student('J', 10, 12, 13, 15))
+    school_class.add_student(Student('A', 8, 2, 17, 11))
+    school_class.add_student(Student('V', 9, 14, 14, 18))
 
     print("\n--- Classement Matière 1 ---")
     for student in school_class:
@@ -105,3 +121,7 @@ if __name__ == '__main__':
     print("\n--- Classement Matière 3 ---")
     for student in StudentIteratorMatter3(school_class.get_students()):
         print(student)
+
+    print("\n--- Test note4 ---")
+    for student in school_class.get_students():
+        print(f'{student.get_name()} - Note4: {student.get_note4()}')
